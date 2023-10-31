@@ -50,7 +50,7 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 // use the onErrorLater callback to handle the case when the R process dies
 // use onSuccess to retrieve the shinyUrl
 const tryStartWebserver = async (attempt, progressCallback, onErrorStartup, onErrorLater, onSuccess) => {
-    if (attempt > 3) {
+    if (attempt > 100) {
         await progressCallback({
             attempt: attempt,
             code: 'failed'
@@ -230,7 +230,7 @@ app.on('ready', async () => {
     }
 
     const onErrorStartup = async () => {
-        await waitFor(1000) // TODO: hack, only emit if the loading screen is ready
+        await waitFor(10000) // TODO: hack, only emit if the loading screen is ready
         await emitSpashEvent('failed')
     }
 
