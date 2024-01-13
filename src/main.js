@@ -126,9 +126,11 @@ let errorSplashScreen
 
 const createWindow = (shinyUrl) => {
     mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1600,
+        height: 900,
         show: false,
+        // icon: __dirname + '/favicon.ico',
+        autoHideMenuBar: true,
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true
@@ -142,8 +144,8 @@ const createWindow = (shinyUrl) => {
 }
 
 const splashScreenOptions = {
-    width: 800,
-    height: 600,
+    width: 1600,
+    height: 900,
     backgroundColor: backgroundColor
 }
 
