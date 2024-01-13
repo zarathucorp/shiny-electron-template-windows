@@ -1,1 +1,2 @@
-# shiny-electron-template-windows-2023
+# shiny-electron-template-windows
+
