@@ -1,5 +1,5 @@
 // Copyright (c) 2018 Dirk Schumacher, Noam Ross, Rich FitzJohn
-// 2023 Jinhwan Kim
+// Copyright (c) 2024 Jinhwan Kim
 import {
     app,
     session,
@@ -18,37 +18,21 @@ import {
 
 const rPath = getRPath(os.platform())
 
-// signal if a shutdown of the app was requested
-// this is used to prevent an error window once the R session dies
 let shutdown = false
 
 const rpath = path.join(app.getAppPath(), rPath)
 const libPath = path.join(rpath, 'library')
 const rscript = path.join(rpath, 'bin', 'R')
-
 const shinyAppPath = path.join(app.getAppPath(), 'shiny')
 
 const backgroundColor = '#2c3e50'
 
-// We have to launch a child process for the R shiny webserver
-// Things we need to take into account:
-// The process dies during setup
-// The process dies during app usuage (e.g. the OS kills the process)
-// At the random port, another webserver is running
-// at any given time there should be 0 or 1 shiny processes
 let rShinyProcess = null
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
+if (require('electron-squirrel-startup')) { 
     app.quit()
 }
 
-// tries to start a webserver
-// attempt - a counter how often it was attempted to start a webserver
-// use the progress call back to listen for intermediate status reports
-// use the onErrorStartup callback to react to a critical failure during startup
-// use the onErrorLater callback to handle the case when the R process dies
-// use onSuccess to retrieve the shinyUrl
 const tryStartWebserver = async (attempt, progressCallback, onErrorStartup, onErrorLater, onSuccess) => {
     if (attempt > 100) {
         await progressCallback({
@@ -60,7 +44,7 @@ const tryStartWebserver = async (attempt, progressCallback, onErrorStartup, onEr
     }
 
     if (rShinyProcess !== null) {
-        await onErrorStartup() // should not happen
+        await onErrorStartup() 
         return
     }
 
@@ -136,8 +120,6 @@ const tryStartWebserver = async (attempt, progressCallback, onErrorStartup, onEr
     } catch (e) {}
 }
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 let loadingSplashScreen
 let errorSplashScreen
@@ -154,9 +136,6 @@ const createWindow = (shinyUrl) => {
     })
 
     mainWindow.loadURL(shinyUrl)
-
-    // mainWindow.webContents.openDevTools()
-
     mainWindow.on('closed', () => {
         mainWindow = null
     })
@@ -185,24 +164,19 @@ const createErrorScreen = () => {
     errorSplashScreen = createSplashScreen('failed')
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', async () => {
-    // Set a content security policy
+app.on('ready', async () => {    
     session.defaultSession.webRequest.onHeadersReceived((_, callback) => {
         callback({
             responseHeaders: `
-      default-src 'none';
-      script-src 'self';
-      img-src 'self' data:;
-      style-src 'self';
-      font-src 'self';
-      `
+              default-src 'none';
+              script-src 'self';
+              img-src 'self' data:;
+              style-src 'self';
+              font-src 'self';
+              `
         })
     })
-
-    // Deny all permission requests
+    
     session.defaultSession.setPermissionRequestHandler((_1, _2, callback) => {
         callback(false)
     })
@@ -214,8 +188,7 @@ app.on('ready', async () => {
             await loadingSplashScreen.webContents.send(event, data)
         } catch (e) {}
     }
-
-    // pass the loading events down to the loadingSplashScreen window
+    
     const progressCallback = async (event) => {
         await emitSpashEvent('start-webserver-event', event)
     }
@@ -246,29 +219,10 @@ app.on('ready', async () => {
     }
 })
 
-// Quit when all windows are closed.
-app.on('window-all-closed', () => {
-    // On OS X it is common for applications and their menu bar
-    // to stay active until the user quits explicitly with Cmd + Q
-    // if (process.platform !== 'darwin') {
-    // }
-    // We overwrite the behaviour for now as it makes things easier
-    // remove all events
+app.on('window-all-closed', () => {    
     shutdown = true
-    app.quit()
-
-    // kill the process, just in case
-    // usually happens automatically if the main process is killed
+    app.quit()    
     try {
         rShinyProcess.kill()
     } catch (e) {}
-})
-
-app.on('activate', () => {
-    // On OS X it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    //if (mainWindow === null) {
-    //  createWindow()
-    //}
-    // Deactivated for now
 })
