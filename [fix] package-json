@@ -16,7 +16,7 @@
   "license": "MIT",
    "repository": {
     "type": "git",
-    "url": "https://github.com/zarathucorp/shiny-electron-template-windows-2023"
+    "url": "https://github.com/zarathucorp/shiny-electron-template-windows"
   },
   "dependencies": {
     "axios": "0.27.2",
