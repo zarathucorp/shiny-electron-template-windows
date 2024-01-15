@@ -10,6 +10,7 @@ import path from 'path'
 import http from 'axios'
 import os from 'os'
 import execa from 'execa'
+import pidtree from 'pidtree';
 import {
     randomPort,
     waitFor,
@@ -83,10 +84,10 @@ const tryStartWebserver = async (attempt, progressCallback, onErrorStartup, onEr
                 'R_LIBS_SITE': libPath,
                 'R_LIB_PATHS': libPath
             }
-        }).catch((e) => {
-        shinyProcessAlreadyDead = true
-        onError(e)
-    })
+        });
+        pidtree(rShinyProcess.pid, function (err, pids) {
+            child_pids = pids;
+          });
 
     let url = `http://127.0.0.1:${shinyPort}`
     for (let i = 0; i <= 50; i++) {
@@ -225,6 +226,11 @@ app.on('window-all-closed', () => {
     shutdown = true
     app.quit()    
     try {
-        rShinyProcess.kill()
-    } catch (e) {}
+        rShinyProcess.kill();
+        child_pids.forEach((pid) => {
+          try {
+            process.kill(pid, "SIGTERM");
+          } catch (e) {}
+        });
+      } catch (e) {}
 })
