@@ -2,8 +2,9 @@
 # 2023 Jinhwan Kim
 # Download and extract the Windows binary install
 mkdir r-win
-wget https://cloud.r-project.org/bin/windows/base/old/4.3.1/R-4.3.1-win.exe \
---output-document r-win/latest_r.exe
+
+curl -o r-win/latest_r.exe https://cloud.r-project.org/bin/windows/base/old/4.3.1/R-4.3.1-win.exe
+
 cd r-win
 innoextract -e latest_r.exe
 mv app/* ../r-win
