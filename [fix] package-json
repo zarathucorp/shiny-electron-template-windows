@@ -22,7 +22,8 @@
     "axios": "0.27.2",
     "electron-squirrel-startup": "^1.0.0",
     "esm": "^3.2.25",
-    "execa": "^5.1.1"
+    "execa": "^5.1.1",
+    "pidtree": "^0.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.22.20",
