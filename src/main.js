@@ -86,7 +86,7 @@ const tryStartWebserver = async (attempt, progressCallback, onErrorStartup, onEr
             }
         });
         pidtree(rShinyProcess.pid, function (err, pids) {
-            child_pids = pids;
+            let child_pids = pids;
           });
 
     let url = `http://127.0.0.1:${shinyPort}`
