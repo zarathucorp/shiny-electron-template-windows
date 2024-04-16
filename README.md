@@ -22,7 +22,7 @@
 ![NodeJS](https://img.shields.io/badge/node.js-20.11.0-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 ![NPM](https://img.shields.io/badge/NPM-10.3.0-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)
 ![RStudio](https://img.shields.io/badge/RStudio-2023.12.0-4285F4?style=for-the-badge&logo=rstudio&logoColor=white)
-![R](https://img.shields.io/badge/r-4.3.1-%23276DC3.svg?style=for-the-badge&logo=r&logoColor=white)
+![R](https://img.shields.io/badge/r-4.3.2-%23276DC3.svg?style=for-the-badge&logo=r&logoColor=white)
 ![Electron.js](https://img.shields.io/badge/Electron-7.2.0-191970?style=for-the-badge&logo=Electron&logoColor=white) 
 ![windowOS](https://img.shields.io/badge/windows-10-AAA?style=for-the-badge&logo=microsoft)
 
