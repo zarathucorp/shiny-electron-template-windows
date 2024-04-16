@@ -1,4 +1,5 @@
 # Copyright (c) 2018 Dirk Schumacher, Noam Ross, Rich FitzJohn
+# Copyright (c) 2024 Jinhwan Kim
 
 #!/usr/bin/env Rscript
 
@@ -14,12 +15,19 @@ cran_pkgs <- setdiff(unique(c(
   automagic::get_dependent_packages("shiny")
 )), "automagic")
 
+# if you want manually add cran packages, use below code
+# cran_pkgs <- c(cran_pkgs, "MANUALPACKAGE")
+
 install_bins <- function(cran_pkgs, library_path, type, decompress,
                          remove_dirs = c("help", "doc", "tests", "html",
                                          "include", "unitTests",
                                          file.path("libs", "*dSYM"))) {
   
   installed <- list.files(library_path)
+  
+  # use below code if you want to update R packages with recent version which is already installed.
+  # installed <- c()
+  
   cran_to_install <- sort(setdiff(
     unique(unlist(
       c(cran_pkgs,
@@ -41,12 +49,6 @@ install_bins <- function(cran_pkgs, library_path, type, decompress,
   invisible(NULL)
 }
 
-if (dir.exists("r-mac")) {
-  install_bins(cran_pkgs = cran_pkgs, library_path = file.path("r-mac", "library"),
-               type = "mac.binary.el-capitan", decompress = untar)
-}
-
-if (dir.exists("r-win")) {
-  install_bins(cran_pkgs = cran_pkgs, library_path = file.path("r-win", "library"),
+install_bins(cran_pkgs = cran_pkgs, library_path = file.path("r-win", "library"),
                type = "win.binary", decompress = unzip)
-}
+
